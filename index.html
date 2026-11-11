@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Satzbuch</title>
+<meta name="description" content="Trainingsplan, Satz-Log und Ernährung in einer App.">
+<meta name="theme-color" content="#EEF0EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101214" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Satzbuch">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="appbar">
+  <div class="wrap">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 9v6M6.5 6v12M17.5 6v12M21 9v6M6.5 12h11"/></svg></span>Satzbuch</div>
+    <button class="btn ghost data-btn" type="button" data-act="data-open">Daten &amp; Backup</button>
+  </div>
+</header>
+
+<main class="wrap" id="app" aria-live="polite"></main>
+
+<div class="restbar" id="restbar" hidden>
+  <div class="restbar-inner">
+    <span class="rest-time" id="rest-time">0:00</span>
+    <span class="rest-label" id="rest-label">Pause</span>
+    <button type="button" data-act="rest-plus">+15 s</button>
+    <button type="button" data-act="rest-skip">Weiter</button>
+    <span class="restbar-fill" id="rest-fill"></span>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden></div>
+<div class="sheet bridge" id="bridge" hidden></div>
+<div class="sheet" id="datasheet" hidden></div>
+
+<div class="scanner" id="scanner" hidden>
+  <video id="scan-video" playsinline muted autoplay></video>
+  <div class="scan-frame" aria-hidden="true"><span></span></div>
+  <div class="scan-top"><p id="scan-msg">Halte den Barcode in den Rahmen</p></div>
+  <div class="scan-bottom">
+    <button class="btn" type="button" data-act="scan-manual">Nummer eintippen</button>
+    <button class="btn" type="button" data-act="scan-photo">Foto aufnehmen</button>
+    <button class="btn primary" type="button" data-act="scan-cancel">Abbrechen</button>
+  </div>
+</div>
+
+<input type="file" id="file-barcode" accept="image/*" capture="environment" hidden>
+<input type="file" id="file-label" accept="image/*" hidden>
+<input type="file" id="file-meal" accept="image/*" hidden>
+<input type="file" id="file-backup" accept="application/json,.json" hidden>
+
+<nav class="tabbar" aria-label="Bereiche">
+  <div class="tabbar-inner">
+    <button class="tab" type="button" data-nav="training"><svg viewBox="0 0 24 24"><path d="M3 9v6M6.5 6v12M17.5 6v12M21 9v6M6.5 12h11"/></svg>Training</button>
+    <button class="tab" type="button" data-nav="plan"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>Plan</button>
+    <button class="tab" type="button" data-nav="ernaehrung"><svg viewBox="0 0 24 24"><path d="M12 7.5c0-2.2 1.2-3.8 3.2-4.5"/><path d="M12 8.2c-1.2-.8-2.6-1.2-4-1.2C5.3 7 4 9.6 4 12.6 4 16.8 6.9 21 9.6 21c1.1 0 1.5-.5 2.4-.5s1.3.5 2.4.5c2.7 0 5.6-4.2 5.6-8.4C20 9.6 18.7 7 16 7c-1.4 0-2.8.4-4 1.2z"/></svg>Ernährung</button>
+    <button class="tab" type="button" data-nav="verlauf"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Verlauf</button>
+    <button class="tab" type="button" data-nav="fortschritt"><svg viewBox="0 0 24 24"><path d="M4 19h16M6 15l4-4 3 3 5-6"/></svg>Fortschritt</button>
+  </div>
+</nav>
+
+<script src="vendor/zxing.min.js"></script>
+<script src="guides.js"></script>
+<script src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+</script>
+</body>
+</html>
